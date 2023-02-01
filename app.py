@@ -36,7 +36,7 @@ CORS(app)
 
 MODEL_PATH = "our_model.h5"
 model = tf.keras.models.load_model(MODEL_PATH)
-print('Model loaded. Check http://127.0.0.1:5000/ or http://localhost:5000/')
+print('Model loaded. Check http://192.168.1.104:5000/ or http://localhost:5000/')
 
 
 # In[ ]:
@@ -58,13 +58,13 @@ def model_predict(img_path, model):
 def upload():
     if request.method == 'POST':
         # Get the file from post request
-        print(request)
+
         print(request.files)
         f = request.files['file']
 
         # Save the file to ./uploads
         basepath = os.path.dirname(__file__)
-        file_path = os.path.join( basepath, 'uploads', secure_filename(f.filename) )
+        file_path = os.path.join(basepath, 'uploads', secure_filename(f.filename) )
         f.save(file_path)
 
         # Make prediction
@@ -77,6 +77,7 @@ def upload():
         result = CATEGORIES[int(round(prediction[0][0]))]
         
         # returning the result
+        print(result)
         return result
     
     # if not a 'POST' request we then return None
@@ -88,5 +89,5 @@ def upload():
 
 # main program
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    app.run(port=5000, debug=True, host='0.0.0.0')
 
